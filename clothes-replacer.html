@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered tool to virtually replace clothing items in images. Upload your photo and try different outfits instantly.">
+    <meta name="keywords" content="clothing replacement, virtual try-on, outfit changer, image editing, fashion tool">
+    <meta name="author" content="Clothes Replacer Tool">
+    <title>Clothes Replacer Tool | Virtual Outfit Changer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            font-weight: 300;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .seo-text {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: 300;
+            max-width: 600px;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px 0;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .tool-title h2 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .tool-title p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .ad-container {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+            min-height: 90px;
+        }
+
+        .ad-placeholder {
+            width: 728px;
+            height: 90px;
+            background-color: #f1f1f1;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.9rem;
+            border-radius: 4px;
+        }
+
+        .ad-horizontal {
+            width: 100%;
+            max-width: 728px;
+        }
+
+        .tool-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .tool-wrapper {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .image-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .image-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .image-placeholder {
+            text-align: center;
+            color: #aaa;
+        }
+
+        .image-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .upload-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .upload-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .upload-btn {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .upload-btn:hover {
+            background-color: #e9ecef;
+            border-color: #6a11cb;
+        }
+
+        .upload-btn i {
+            font-size: 2.5rem;
+            color: #6a11cb;
+            margin-bottom: 10px;
+        }
+
+        .url-input-container {
+            margin-top: 20px;
+        }
+
+        .url-input-container input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .url-input-container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .url-input-container button:hover {
+            background-color: #5a0cb3;
+        }
+
+        .clothing-selector {
+            margin-top: 20px;
+        }
+
+        .selector-group {
+            margin-bottom: 20px;
+        }
+
+        .selector-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .selector-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            flex: 1;
+            padding: 17px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .replace-btn {
+            background-color: #6a11cb;
+            color: white;
+        }
+
+        .replace-btn:hover {
+            background-color: #5a0cb3;
+        }
+
+        .download-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .download-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .optimization-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            border-left: 4px solid #6a11cb;
+        }
+
+        .optimization-info h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .optimization-info ul {
+            padding-left: 20px;
+            color: #555;
+        }
+
+        .optimization-info li {
+            margin-bottom: 8px;
+        }
+
+        .ad-sidebar {
+            display: none;
+        }
+
+        @media (min-width: 1200px) {
+            .ad-sidebar {
+                display: block;
+                position: fixed;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 160px;
+            }
+        }
+
+        .ad-vertical {
+            width: 160px;
+            height: 600px;
+            background-color: #f1f1f1;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #bdc3c7;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: #6a11cb;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #6a11cb;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .tool-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .image-section {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ad-placeholder {
+                width: 100%;
+                height: 100px;
+            }
+            
+            .image-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tshirt"></i>
+                    <div>
+                        <h1>Clothes Replacer Tool</h1>
+                        <span>Virtual Outfit Changer & Image Editor</span>
+                    </div>
+                </div>
+                <div class="seo-text">
+                    <p>Free online tool to replace clothing items in any image. Upload a photo and virtually try different outfits instantly. Perfect for fashion designers, online shoppers, and content creators.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="ad-container">
+            <div class="ad-placeholder ad-horizontal">
+                <!-- Horizontal Ad Space (728x90) -->
+                <div>Advertisement - Replace with Google AdSense code (Ad Unit ID: YOUR_HORIZONTAL_AD_ID)</div>
+            </div>
+        </div>
+
+        <div class="tool-title">
+            <h2>Image Clothes Replacing Tool</h2>
+            <p>Upload your image, select the clothing item to replace, and see the result instantly. Perfect for virtual try-ons and outfit visualization.</p>
+        </div>
+
+        <div class="tool-wrapper">
+            <!-- Original Image Section -->
+            <div class="image-section">
+                <h3 class="section-title"><i class="fas fa-image"></i> Original Image</h3>
+                <div class="image-container" id="originalImageContainer">
+                    <div class="image-placeholder">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Upload an image to get started</p>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <div class="upload-options">
+                        <div class="upload-btn" id="uploadFromDrive">
+                            <i class="fas fa-folder-open"></i>
+                            <span>Upload from Drive</span>
+                        </div>
+                        <div class="upload-btn" id="uploadFromDevice">
+                            <i class="fas fa-upload"></i>
+                            <span>Upload from Device</span>
+                        </div>
+                    </div>
+                    
+                    <div class="url-input-container">
+                        <label for="imageUrl">Or enter image URL:</label>
+                        <input type="text" id="imageUrl" placeholder="https://example.com/your-image.jpg">
+                        <button id="loadFromUrl">Load Image from URL</button>
+                    </div>
+                    
+                    <div class="clothing-selector">
+                        <div class="selector-group">
+                            <label for="clothingType"><i class="fas fa-tshirt"></i> Select Clothing Item to Replace:</label>
+                            <select id="clothingType">
+                                <option value="shirt">Shirt/Top</option>
+                                <option value="pants">Pants/Trousers</option>
+                                <option value="dress">Dress</option>
+                                <option value="jacket">Jacket/Coat</option>
+                                <option value="shoes">Shoes/Footwear</option>
+                                <option value="hat">Hat/Headwear</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        </div>
+                        
+                        <div class="selector-group">
+                            <label for="replacementStyle"><i class="fas fa-palette"></i> Replacement Style:</label>
+                            <select id="replacementStyle">
+                                <option value="modern">Modern Fashion</option>
+                                <option value="casual">Casual Wear</option>
+                                <option value="formal">Formal Attire</option>
+                                <option value="sport">Sportswear</option>
+                                <option value="vintage">Vintage Style</option>
+                                <option value="custom">Custom Design</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="loading" id="loadingOriginal">
+                        <div class="loading-spinner"></div>
+                        <p>Processing image...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Result Image Section -->
+            <div class="image-section">
+                <h3 class="section-title"><i class="fas fa-magic"></i> Result After Replacement</h3>
+                <div class="image-container" id="resultImageContainer">
+                    <div class="image-placeholder">
+                        <i class="fas fa-star"></i>
+                        <p>Processed image will appear here</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="replace-btn" id="replaceClothing">
+                        <i class="fas fa-sync-alt"></i> Replace Clothing
+                    </button>
+                    <button class="download-btn" id="downloadResult">
+                        <i class="fas fa-download"></i> Download Result
+                    </button>
+                </div>
+                
+                <div class="optimization-info">
+                    <h4><i class="fas fa-bolt"></i> Image Optimization Applied</h4>
+                    <ul>
+                        <li>Automatic resolution adjustment for web display</li>
+                        <li>Compression without visible quality loss</li>
+                        <li>Color correction and enhancement</li>
+                        <li>Fast loading with optimized file size</li>
+                    </ul>
+                </div>
+                
+                <div class="loading" id="loadingResult">
+                    <div class="loading-spinner"></div>
+                    <p>Replacing clothing item...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ad-container">
+            <div class="ad-placeholder ad-horizontal">
+                <!-- Horizontal Ad Space (728x90) -->
+                <div>Advertisement - Replace with Google AdSense code (Ad Unit ID: YOUR_HORIZONTAL_AD_ID)</div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Vertical Ad Sidebar (for larger screens) -->
+    <div class="ad-sidebar">
+        <div class="ad-vertical">
+            <!-- Vertical Ad Space (160x600) -->
+            <div>Vertical Ad <br> (Ad Unit ID: YOUR_VERTICAL_AD_ID)</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Clothes Replacer Tool</h3>
+                    <p>Free online tool for virtual clothing replacement and outfit visualization. Perfect for fashion enthusiasts and content creators.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#">How to Use</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Us</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <a href="#">Virtual Try-On</a>
+                    <a href="#">Outfit Visualization</a>
+                    <a href="#">Image Optimization</a>
+                    <a href="#">Multiple Clothing Options</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Clothes Replacer Tool. All rights reserved. This tool uses advanced algorithms for virtual clothing replacement.</p>
+                <p>For optimal results, use high-quality images with clear visibility of clothing items.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const originalImageContainer = document.getElementById('originalImageContainer');
+        const resultImageContainer = document.getElementById('resultImageContainer');
+        const uploadFromDevice = document.getElementById('uploadFromDevice');
+        const uploadFromDrive = document.getElementById('uploadFromDrive');
+        const loadFromUrl = document.getElementById('loadFromUrl');
+        const imageUrl = document.getElementById('imageUrl');
+        const replaceClothingBtn = document.getElementById('replaceClothing');
+        const downloadResultBtn = document.getElementById('downloadResult');
+        const clothingType = document.getElementById('clothingType');
+        const replacementStyle = document.getElementById('replacementStyle');
+        const loadingOriginal = document.getElementById('loadingOriginal');
+        const loadingResult = document.getElementById('loadingResult');
+        
+        // Global variables for images
+        let originalImage = null;
+        let resultImage = null;
+        
+        // Event Listeners
+        uploadFromDevice.addEventListener('click', () => {
+            // Create a file input element
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    loadImageFromFile(file);
+                }
+            };
+            
+            fileInput.click();
+        });
+        
+        uploadFromDrive.addEventListener('click', () => {
+            alert('In a real implementation, this would connect to Google Drive API for file selection.');
+            // For demo purposes, we'll simulate this by using a file input
+            uploadFromDevice.click();
+        });
+        
+        loadFromUrl.addEventListener('click', () => {
+            const url = imageUrl.value.trim();
+            if (!url) {
+                alert('Please enter a valid image URL');
+                return;
+            }
+            
+            loadImageFromUrl(url);
+        });
+        
+        replaceClothingBtn.addEventListener('click', () => {
+            if (!originalImage) {
+                alert('Please upload an image first');
+                return;
+            }
+            
+            simulateClothingReplacement();
+        });
+        
+        downloadResultBtn.addEventListener('click', () => {
+            if (!resultImage) {
+                alert('No result image to download. Please process an image first.');
+                return;
+            }
+            
+            // Create a temporary link to download the image
+            const link = document.createElement('a');
+            link.href = resultImage.src;
+            link.download = 'clothes-replacement-result.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+        
+        // Functions
+        function loadImageFromFile(file) {
+            loadingOriginal.style.display = 'block';
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImage = new Image();
+                originalImage.onload = () => {
+                    displayImage(originalImage, originalImageContainer);
+                    loadingOriginal.style.display = 'none';
+                    // Clear result when new image is loaded
+                    clearResultImage();
+                };
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function loadImageFromUrl(url) {
+            loadingOriginal.style.display = 'block';
+            
+            originalImage = new Image();
+            originalImage.crossOrigin = 'anonymous';
+            originalImage.onload = () => {
+                displayImage(originalImage, originalImageContainer);
+                loadingOriginal.style.display = 'none';
+                // Clear result when new image is loaded
+                clearResultImage();
+            };
+            
+            originalImage.onerror = () => {
+                alert('Failed to load image from URL. Please check the URL and try again.');
+                loadingOriginal.style.display = 'none';
+            };
+            
+            originalImage.src = url;
+        }
+        
+        function displayImage(img, container) {
+            container.innerHTML = '';
+            container.appendChild(img);
+            
+            // Apply some styling to the image
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100%';
+            img.style.objectFit = 'contain';
+            img.style.borderRadius = '6px';
+        }
+        
+        function clearResultImage() {
+            resultImage = null;
+            resultImageContainer.innerHTML = `
+                <div class="image-placeholder">
+                    <i class="fas fa-star"></i>
+                    <p>Processed image will appear here</p>
+                </div>
+            `;
+        }
+        
+        function simulateClothingReplacement() {
+            if (!originalImage) return;
+            
+            loadingResult.style.display = 'block';
+            
+            // In a real implementation, this would call an API or use advanced image processing
+            // For this demo, we'll simulate the process with a timeout and some image manipulation
+            setTimeout(() => {
+                // Create a canvas to manipulate the image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas dimensions to match the image
+                canvas.width = originalImage.width;
+                canvas.height = originalImage.height;
+                
+                // Draw the original image
+                ctx.drawImage(originalImage, 0, 0);
+                
+                // Get selected clothing type and style
+                const selectedClothing = clothingType.value;
+                const selectedStyle = replacementStyle.value;
+                
+                // Apply some visual effect to simulate clothing replacement
+                // In a real app, this would be sophisticated AI-based replacement
+                simulateVisualEffect(ctx, canvas, selectedClothing, selectedStyle);
+                
+                // Create result image from canvas
+                resultImage = new Image();
+                resultImage.src = canvas.toDataURL('image/jpeg', 0.9); // Compressed quality
+                
+                // Display the result
+                resultImage.onload = () => {
+                    displayImage(resultImage, resultImageContainer);
+                    loadingResult.style.display = 'none';
+                    
+                    // Show a success message
+                    showNotification(`Successfully replaced ${selectedClothing} with ${selectedStyle} style!`);
+                };
+            }, 1500); // Simulate processing delay
+        }
+        
+        function simulateVisualEffect(ctx, canvas, clothingType, style) {
+            // This is a simplified simulation of clothing replacement
+            // In a real application, this would involve advanced image processing/AI
+            
+            // Get image data
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            
+            // Apply different effects based on clothing type and style
+            let effectIntensity = 0;
+            
+            switch(style) {
+                case 'modern':
+                    effectIntensity = 30;
+                    break;
+                case 'casual':
+                    effectIntensity = 20;
+                    break;
+                case 'formal':
+                    effectIntensity = 10;
+                    break;
+                case 'sport':
+                    effectIntensity = 40;
+                    break;
+                case 'vintage':
+                    effectIntensity = -20;
+                    break;
+                case 'custom':
+                    effectIntensity = 50;
+                    break;
+            }
+            
+            // Apply a simple color/contrast adjustment to simulate clothing change
+            // In reality, this would be a sophisticated clothing replacement algorithm
+            for (let i = 0; i < data.length; i += 4) {
+                // Adjust colors based on effect intensity
+                if (effectIntensity > 0) {
+                    // Brighten and increase contrast for modern/sport styles
+                    data[i] = Math.min(255, data[i] + effectIntensity);     // Red
+                    data[i+1] = Math.min(255, data[i+1] + effectIntensity); // Green
+                    data[i+2] = Math.min(255, data[i+2] + effectIntensity); // Blue
+                } else {
+                    // Darken and desaturate for vintage style
+                    data[i] = Math.max(0, data[i] + effectIntensity);     // Red
+                    data[i+1] = Math.max(0, data[i+1] + effectIntensity); // Green
+                    data[i+2] = Math.max(0, data[i+2] + effectIntensity); // Blue
+                }
+            }
+            
+            // Put the modified image data back
+            ctx.putImageData(imageData, 0, 0);
+            
+            // Add a text overlay to indicate what was changed (for demo purposes)
+            ctx.fillStyle = 'rgba(106, 17, 203, 0.7)';
+            ctx.fillRect(20, 20, 300, 40);
+            
+            ctx.font = '16px Arial';
+            ctx.fillStyle = 'white';
+            ctx.fillText(`Replaced ${clothingType} with ${style} style`, 30, 45);
+        }
+        
+        function showNotification(message) {
+            // Create a notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#6a11cb';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '8px';
+            notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            notification.style.zIndex = '1000';
+            notification.style.fontWeight = '500';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+        
+        // Initialize with a sample image for demo purposes
+        window.onload = () => {
+            // Load a sample image for demo
+            setTimeout(() => {
+                loadImageFromUrl('https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');
+            }, 500);
+        };
+    </script>
+</body>
+</html>
